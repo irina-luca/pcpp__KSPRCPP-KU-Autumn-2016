@@ -1,0 +1,2 @@
+a) Check out 'ABC.java'.
+b) We believe that a replacement of {deposit, +/- Amount} with passing messages as {inspect}-{Balance}-{set, New} would not yield the right result, because while a bank B tries to send a new update to account A based on an inspected value of A's balance, another actor might update A's balance value, without notifying B about it. Therefore, the new instance of A that B will try to set would have a wrong state containing a wrong value of the account balance. This all happens because in ABC.java we do not work with shared state.

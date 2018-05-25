@@ -1,0 +1,30 @@
+# OS:   Windows 10; 10.0; amd64
+# JVM:  Oracle Corporation; 1.8.0_102
+# CPU:  Intel64 Family 6 Model 60 Stepping 3, GenuineIntel; 8 "cores"
+# Date: 2016-10-07T22:30:17+0200
+
+class SynchronizedMap
+        17 maps to B
+       117 maps to C
+        34 maps to F
+       217 maps to E
+        17 maps to B
+        17 maps to B
+       217 maps to E
+        34 maps to F
+       217 maps to E
+        17 maps to B
+        34 maps to F
+
+class StripedMap
+        17 maps to B
+       117 maps to C
+       217 maps to E
+        17 maps to B
+        34 maps to F
+        17 maps to B
+       217 maps to E
+        34 maps to F
+       217 maps to E
+        17 maps to B
+        34 maps to F

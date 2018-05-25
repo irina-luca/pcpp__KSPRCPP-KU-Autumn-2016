@@ -1,0 +1,40 @@
+Exercise 4.1
+1. Check out the results in file 'Exercise_4.1.1_from-Mark1-to-Mark6.txt'. Our observations are as it follows:
+   - Mark1() performs in 0.0 ns, which is highly implausible. This occurs because of the JIT compiler, which tries to optimize and notices how the double dummy (the result of multiply(i)) is never used, therefore making the for loop dead code.
+   - Mark2() successfully avoids the dead code from Mark1(), by adding to the double dummy in each iteration. The running time is somewhere around 30.3/ 30.4/ 30.8 ns, which is very similar to what the paper mentions.
+   - Mark3() automates the execution by running the code 10 times and getting similar results as Mark2() in each run.
+   - Mark4() calculates the standard deviation, which, compared to the paper's result, seems very plausible (we ran it multiple times).
+   - Mark5() extends by testing for different values of count. The bigger the count, the smaller the standard deviation gets and at the same time, the mean converges towards 30.3 ns, which is exactly what the paper's results illustrate. As an exception, we notice a sudden increase of the mean to 204.1 ns for count of 512, but the standard deviation is big, as well, which means thta we should not rely on that value. This might occur because the garbage collector does some work at that point or because of the JIT compiler or external sources.
+   - Mark6() extends Mark5() by applying a general function of type IntToDoubleFunction. Both the mean and the standard deviation converge to similar values as in the paper, though generally, the values are just slightly bigger. The difference might occur because of the call made through the functional interface IntToDoubleFunction. Notably, the same weirdly big value for both the mean and the standard deviation shows up, this time when count is 16 and that might be, again, as a consequence of the garbage collector's working at that point.
+
+2. Check out the file 'Exercise_4.1.2.txt'. Our observations are as it follows:
+   - Mark7() simplifies the output, by printing the converging values instead. Our mathematical functions' results seem very close to the ones presented in the paper, though most of the times they are slightly smaller. That might be a consequence of running the code on different platforms and with different CPU architectures.
+
+
+Exercise 4.2
+1. We stored the results in 'Exercise4.2_results.txt'. Our observations are as it follows:
+   - For all the given categories(hashCode, point creation, thread's work, Uncontended lock etc.) it becomes a general rule that the bigger the count, the smaller the mean and standard deviation are, since they converge to more reliable values.
+   - However, all the thread-related results illustrate high both standard deviations and means. Consequently, doing thread-related code is expensive, since there must be some special activities involved in the process, such as: large memory allocation and initialization for the thread stack, system calls that engage the thread with the OS, JVM internal data sturctures additional work etc. All these factors become platform-specific, but as a rule of thumb, they are expensive no matter what platform one uses.
+
+2. Check out the file 'Exercise4.2_results_different_rounds.txt'. Our observations are as it follows:
+   - As mentioned before, the results clearly show how thread-related work is expensive. If we follow even closer, we can notice that all the rounds illustrate how creating threads is always cheaper than 'thread's work', 'thread create start' and 'thread create start join'. That is because creating a thread costs calling the constructor to instantiate the object, while starting the thread, for instance, implies stack memory, native calls etc. Moreover, the thread overhead can also be generated along with the way in which context switch works, thus involving multiple operations to be done (memory load, storing etc.).
+
+
+Exercise 4.3
+1. Check out the file 'Exercise4.3_1.txt', where measurements for threads 1 -> 100 can be found.
+2. See graph: 'Exercise4.3_1-Plot.png', where dependence between the execution time and the number of threads is illustrated.
+3. As illistrated by the results in the file 'Exercise4.3_1.txt', it seems like the optimal number of threads is 8, which gives the minimal running time of 3189.5 us. Therefore, it might be that in some cases where the threads do not perform I/O work, synchronization or other specific work, the usage of one thread per core would yield the best performance. However, adding more threads per core can decrease the performance, since the CPU needs to schedule threads accordingly, doing more thread administration and generally intensive computations.
+4. Check out the file 'Exercise4.3_4.txt', where measurements for both LongCounter and AtomicLong can be found. Our observations are as it follows:
+   - As illustrated by the results, it seems like the usage of AtomicLong instead of LongCounter yields slightly worse execution time. We consider it to be a surprise, since using built-in classes and methods would be a good idea, because of their optimization advantages
+   - As previously, using 8 threads (one per core) still provides the best performance.
+5. Check out the file 'Exercise4.3_5.txt'. Our observations are as it follows:
+   - The results after using a thread-confined local variable seem to place itself as being slightly faster than when using AtomicLong, but also slightly slower than when using LongCounter.
+
+
+Exercise 4.4
+1. -> 6. Results for these exercises can be found in the file 'Exercise4.4_1+2+3+4+5+6.txt'.
+7. As illustrated by the results, Memoizer1 has the worst running time, while Memoizer2 improves drastically and all the other ones compete closely with each other. Thus, everything yields a similar behavior in terms of execution time as we discovered in week2, for exercise 2.4. In our case, Memoizer4 seems to perform best.
+8. One could do some scalability experiments as such:
+   - increase/decrease the number of threads and measure the running time by comparison
+   - change the overlapping ranges and measure the running time by comparison
+   - extend the above two ideas by testing on different platforms

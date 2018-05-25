@@ -1,0 +1,34 @@
+Exercise 6.1
+1. Check 'TestStripedMap.java'.
+2. It is important to lock stripe 's' while reading its size from sizes[s], so that we can safely get the right value of sizes[s] and not allow any other thread access/change the data defended by our locks[s] lock (we ensure visibility and atomicity).
+5. We have implemented version (2) because then we do not need to lock the whole buckets array and such, we achieve less locking and more concurrency.
+6. Check '6.1.6_results.txt'.
+7. The results from running benchmarks for comparing the running time for StripedMap and SynchronizedMap can be found in folder '6.1.7'. As the graph clearly shows, the StripedMap achieves a much better performance compared to SynchronizedMap, which uses synchronization on all methods, thus locking way too much. Moreover, the graph lines representation shows that the two maps have comparable performance in single-threading, but later on, the most complex change occurs between 1-5 threads. Afterwards, both follow a more stable performance, though the SynchronizedMap's running time still increases slightly more, also in the more linear part of the graph.
+8. 
+// I THINK THIS IS NOT SUCH A GOOD EXPLANATION. NEEDS MORE RESEARCH PROBABLY.
+Using an unreasonable amount of stripes would introduce some overhead, since our locks array will become bigger. If we use 16 or 32 stripes, that would mean that every lock will guard 1/16, respectively 1/32 of the hash buckets. If our assumption is that the hash function makes it such that keys are uniformly accessed, the lock striping should reduce the demand for every lock by a factor of 16, respectively 32. Therefore, having such an amount of locks enables at most 16, respectively 32 concurrent thread workers to access the buckets array. If increasing the stripes, let's say to the buckets array length, that would bring up a terrible overhead.
+
+9. It seems like using 32 stripes instead of 16 improves performace. The reason might be that 32 lock would mitigate the risk of lock contention. As a principle, one should hold locks as briefly as possible, because the longer a lock is held, the more likely that lock will be contended, which would happen for our 16 locks, for example, in case they will defend long-term processes running. Concurrent systems perform a lot better when most lock acquisitons are uncontended, which also means less context switches. Using 16 stripes instead of 32 would introduce more lock contention and context switch overhead, thus affectiong performance.
+
+10. The number of buckets must be multiple of the number of stripes, so that we make sure that locking a stripe implies locking the right bucket. Additionally, if this is not the case, reallocateBuckets() would also pose a danger, because buckets might be moved to the wrong stripe instead of the one they must belongs to.
+
+
+Exercise 6.2
+1. Check 'TestStripedMap.java'.
+2. Check 'TestStripedMap.java'.
+3. In putIfAbsent() we need to write to the stripe size no matter if something is added or not in order to ensure visibility of writes to reads.
+4. Check 'TestStripedMap.java'.
+5. Check 'TestStripedMap.java'.
+6. Check results in folder '6.2.6.txt'. As expected, SynchronizedMap performs the worst, since it uses way too much locking. A much better performance than the SynchronizedMap's we can notice for all the others, as such: 
+	- they all allow different operations to work on different locks, thus minimizing lock contention and increasing scalability 
+	- compared to StripedMap, which locks on both read and write, StripedWriteMap allows readers to access the buckets concurrently and only imposes locking on write, which is a good performance add, assuming that our hash maps primarily serve to read operations => StripedWriteMap performs better than StripedMap
+	- WrapConcurrentHashMap, used as a wrapper around Java's good ConcurrentHashMap, performs slightly better than our StripedWriteMap on this machine, but the difference would most likely be even more visible on a more performant machine
+7. Check results in folder '6.2.7.txt'. As in the previous exercise, the graph shows a very similar behavior, though it seems like WrapConcHashMap performs slightly worse than StripedWriteMap, contrarily to what we would expect. This might be determined by the machine specifications we run the tests on (8-core machine, where 4 are physical and 4 are logical). Probably the tests would be more revealing if permorming them on a computer with more cores.
+
+
+Exercise 6.3
+1. 
+// THIS EXPLANATION IS INCOMPLETE
+Check folder '6.3.1'. As shown by the results, LongAdder and NewLongAdderPadded perform best. LongCounter cannot perform as good, since both add() and get() methods are synchronized. Additionally, Java's LongAdder implementation uses AtomicLong in a smart way, such that internally aggregates values and maximizes throughput.
+2. Interestingly enough, the performance of NewLongAdderLessPadded almost doubles, in comparison with NewLongAdderPadded, though it still performs better than all the others, except LongAdder. This shows that random object allocation makes quite some difference.
+

@@ -1,0 +1,63 @@
+Exercise 10.1
+1. Check out 'CasHistogram.java'. The methods work as it follows:
+    - increment(): Prepares both the oldValue and the newValue
+    and then calls compareAndSet, which is atomic, for as long
+    as needed, until it is safe to do the operation. Therefore,
+    the new value update will be done only when the old value
+    is the same. As such, in case some other threads have updated
+    the old value in the meantime, the increment operation will have
+    to be retried, until it is safe to perform it.
+    - getBins(): It returns the current value for every bin count,
+    since the reference is atomic and ensures visibility.
+    - getAndClear(): Works similarly with increment(), with the
+    distinction that the newValue will be reset to 0.
+    - transferBins(): Works by preparing the newValue and oldValue
+    for each bin count with get(), resetting at the same time the
+    bin count in the Histogram where we transfer from. Additionally,
+    compareAndSet will be tried for as long as needed until succeeds,
+    but this time for each bin count. The method works similarly to
+    increment() and getAndClear(), but this time for each available bin.
+
+2. Check out 'TestHistogram.java'. Yes, it produces the right results.
+
+3. Time measurements are as it follows:
+    - for CasHistogram: Elapsed time is: 1.307064584;
+    - for StmHistogram: Elapsed time is: 1.562837037;
+   As noticed, the StmHistogram implementation seems slower than the CasHistogram
+   implementation. Some of the possible reasons for this could be:
+   - contention might be low, so that the operations succeed without much
+   'fight' for completing the compareAndSet() operation;
+
+4. Elapsed time for Histogram2 is: 1.320557939. Usually, it performs slightly worse,
+but the difference is extremely small.
+
+
+Exercise 10.2
+1. Check out 'SimpleRWTryLock.java'.
+
+2. Check out 'SimpleRWTryLock.java'.
+
+3. Check out 'SimpleRWTryLock.java'.
+
+4. Check out 'SimpleRWTryLock.java'.
+
+5. Check out 'SimpleRWTryLock.java'. Please run it with 'enabled assertions' (java -ea SimpleRWTryLock);
+
+6. Check out 'SimpleRWTryLock.java'.
+   Tests can be found in the file, as it follows:
+   - 1st test: We started two threads (for check, please uncomment the commented lines) and we get an expected exception ' Not lock holder || Thread is not the actual one'.
+   What happens is that one thread locks, the other one cannot lock anymore, but then both try to unlock and so, one succeeds, but the other one fails, because there is no more lock left to unlock.
+   - 2nd test: We started two other threads (for check, please uncomment the commented lines), and as expected, sometimes we get the exception 'Cannot unlock reader'. This happens whenever one thread tries to unlock before both locks have been held, but most of the times the threads manage to both lock, which means that the unlock will work for both threads, as well.
+   - 3rd test: We started two other threads (for check, please uncomment the commented lines), and as expected, they do not fail, because they only try to readLock and multiple threads should be able to do that.
+   - 4th test: We started several threads and tried to overlap them, but everything runs without errors and we can see the read/write locks overlapping.
+
+
+Exercise 10.3
+1. See the run results in folder '10.3' and check our the graphical representation in the same folder ('graph-all.png').
+  The graph shows how the different implementations differ in the running time, having the amount of threads as a dependency. Our interpretation is as it follows:
+  - LockingRandom: 
+  - CasRandom: 
+  - TLLockingRandom: 
+  - TLCasRandom: 
+  - WrappedTLRandom: 
+

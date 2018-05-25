@@ -1,0 +1,13 @@
+# OS:   Windows 10; 10.0; amd64
+# JVM:  Oracle Corporation; 1.8.0_102
+# CPU:  Intel64 Family 6 Model 60 Stepping 3, GenuineIntel; 8 "cores"
+# Date: 2016-10-08T16:45:50+0200
+
+SynchronizedMap       16         580484.2 us   97785.27          2
+99992.0
+StripedMap            16         118631.6 us    3275.69          4
+99992.0
+StripedWriteMap       16          61431.0 us    2301.93          4
+99992.0
+WrapConcHashMap       16          61380.9 us    2211.26          8
+99992.0

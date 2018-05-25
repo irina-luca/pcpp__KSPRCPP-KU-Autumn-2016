@@ -1,0 +1,29 @@
+### 1st Run:
+
+TestCacheMemoizer1     1        1630099.8 us   19635.45          2
+
+TestCacheMemoizer2     1         866668.9 us    9762.23          2
+
+TestCacheMemoizer3     1         780769.5 us   13267.10          2
+
+TestCacheMemoizer4     1         757948.8 us   14134.54          2
+
+TestCacheMemoizer5     1         764992.8 us    5803.54          2
+
+TestCacheMemoizer0     1         767371.6 us   14695.72          2
+
+
+
+### 2nd Run:
+
+TestCacheMemoizer1      1        1643254.1 us   17221.68          2
+
+TestCacheMemoizer2      1         868788.7 us   29501.81          2
+
+TestCacheMemoizer3      1        1081712.2 us  157276.42          2
+
+TestCacheMemoizer4      1        1323363.4 us  105260.38          2
+
+TestCacheMemoizer5      1        1286853.2 us  140860.78          2
+
+TestCacheMemoizer0      1         765227.3 us   10565.59          2

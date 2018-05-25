@@ -1,0 +1,39 @@
+For countParallelN with sharedAtomicLong => 
+
+# OS:   Windows 10; 10.0; amd64
+# JVM:  Oracle Corporation; 1.8.0_102
+# CPU:  Intel64 Family 6 Model 60 Stepping 3, GenuineIntel; 8 "cores"
+# Date: 2016-09-25T18:06:16+0200
+countSequential                   11390.0 us     174.64         32
+countParallelN      1             11865.9 us     370.47         32
+countParallelN      2              7418.8 us      41.45         64
+countParallelN      3              4573.4 us     461.08         64
+countParallelN      4              3318.1 us     233.54        128
+countParallelN      5              4216.2 us     114.82         64
+countParallelN      6              3710.7 us      29.38        128
+countParallelN      7              3371.1 us      33.01        128
+countParallelN      8              3183.5 us      22.51        128
+countParallelN      9              3208.2 us      50.46        128
+countParallelN     10              3314.5 us     109.22        128
+countParallelN     11              3286.5 us      15.14        128
+countParallelN     12              3344.6 us      53.44        128
+countParallelN     13              3362.7 us      31.94        128
+countParallelN     14              3475.9 us     284.49        128
+countParallelN     15              3282.0 us      47.01        128
+countParallelN     16              3899.0 us     312.46        128
+countParallelN     17              3374.9 us      97.65        128
+countParallelN     18              3486.9 us      36.64        128
+countParallelN     19              3389.1 us      28.00        128
+countParallelN     20              3426.4 us      21.38        128
+countParallelN     21              3449.2 us      17.90        128
+countParallelN     22              3450.3 us      10.18        128
+countParallelN     23              3460.9 us      41.09        128
+countParallelN     24              3458.7 us      58.38        128
+countParallelN     25              3463.9 us      30.61        128
+countParallelN     26              3482.6 us      17.93        128
+countParallelN     27              3529.0 us      37.92        128
+countParallelN     28              3561.8 us      11.70        128
+countParallelN     29              3595.5 us      21.94        128
+countParallelN     30              3682.7 us      83.71        128
+countParallelN     31              3672.6 us      15.79        128
+countParallelN     32              3848.9 us     183.67        128

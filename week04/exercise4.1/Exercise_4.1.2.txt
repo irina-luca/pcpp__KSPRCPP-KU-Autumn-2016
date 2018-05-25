@@ -1,0 +1,18 @@
+# OS:   Windows 10; 10.0; amd64
+# JVM:  Oracle Corporation; 1.8.0_102
+# CPU:  Intel64 Family 6 Model 60 Stepping 3, GenuineIntel; 8 "cores"
+# Date: 2016-09-23T16:02:06+0200
+
+# Processor: Intel(R) Core(TM) i7-4700MQ CPU @ 2.4GHz 2.4 GHz
+
+
+
+pow                                  76.2 ns       0.38    4194304
+exp                                  55.9 ns       1.40    8388608
+log                                  24.3 ns       0.22   16777216
+sin                                 105.1 ns       0.60    4194304
+cos                                 106.2 ns       0.41    4194304
+tan                                 137.1 ns       0.61    2097152
+asin                                240.1 ns       1.26    1048576
+acos                                229.7 ns       2.62    2097152
+atan                                 41.8 ns       0.16    8388608

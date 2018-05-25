@@ -1,0 +1,223 @@
+==================================================
+PCPP, Exercises week 1
+
+==================================================
+Group 16;  
+Group Members:
+	- student 1: Cerda Toro, Oscar Felipe
+	- student 2: Luca, Irina Alina Gabriela;
+==================================================
+
+============
+Exercise 1.1
+============
+1. If the 'increment()' method is not synchronized, then the count field of 
+the LongCounter lc instance will always be smaller than the correct value 
+(10_000_000 * 2), for instance values like 10267810, 17025921 or 12750885 
+because the lack of synchronization would allow the two threads, t1 and t2, 
+access the field at the same time and increment it, which means that the 
+two increments would count as one.
+
+2. Because the number is smaller, the possibility of getting a wrong number 
+is also reduced, so we do not consider this code safe, despite that most of 
+the time we get the correct answer.
+(ADDED from ANDERS): Now the program prints 200 which is the expected/wanted.
+This is most likely due to the fact that race conditions are not that common. When each thread only increments 100 times it is likely that, first of all, the first thread finishes before the other, or race condition does not occur in that time.
+
+3. No, we think it does not make a difference to use other kinds of increments. 
+All three ways of incrementing do the same (create the same machine code) and are not atomic.
+
+4. In case the increment() and decrement() methods are not synchronized, 
+the result will be unexpected, with values such as 1601584 or 5864095, 28424,
+-24789 because the two methods changing the state of the LongCounter lc 
+instance must never have collisions. If synchronizing the methods, we get the 
+right result, which is 0.
+
+5. 
+- Experiment (i),  none synchronized: 
+Some final values are -2719096, 10699, 195284.
+- Experiment (iI), only decrement() synchronized: 
+Some final values are 22389, 21153, 18247.
+- Experiment (iii), only increment() synchronized: 
+Some final values are  -16555, -19257, -12234, -16679, -26672 instead of 0,
+which is what we are expecting.
+- Experiment (iv), both synchronized: 
+Some final values are 0.
+
+
+============
+Exercise 1.2
+============
+1. Both the dash and the bar can show up duplicated, because of the following abstraction:
+if thread A prints one sign and then thread B tries to print the other sign before thread A 
+gets to print its sign.
+
+2. 'synchronized' is going to lock the instance of Printer object, and therefore 
+the threads are going to aquire the lock in order to print without race conditions. As a note,
+the process runs slower after making the method synchronized.
+
+
+============
+Exercise 1.3
+============ 
+1. Yes, it loops forever.
+
+2. Yes, thread t terminates now.
+
+3. No, it does no terminate. If we only synchronize the setter, then threads calling the getter
+would not be able to see the set values, but they would instead see stale values.
+
+4. Yes, it terminates. Despite the book does not recomend the use of volatile, in this case
+it makes sense because the volatile keyword ensures that updates to the field will be propagated 
+predictably to other threads. So as soon as we press enter, the setter will update the value and 
+the getter in the thread will be able to see the updated value ensuring visibility.
+
+
+============
+Exercise 1.4
+============
+1. 
++++ Test 1: Sequential time test in a laptop running Ubuntu. i7 2 cores:
+
+	time java TestCountPrimes
+	Sequential result:    3001134
+
+	java TestCountPrimes  58,60s user 0,03s system 100% cpu 58,589 total
+
++++ Test 2: Sequential time test in a windows laptop. i7 processor with 4 cores:
+
+	Days              : 0
+	Hours             : 0
+	Minutes           : 0
+	Seconds           : 58	
+	Milliseconds      : 890
+	Ticks             : 588903527
+	TotalDays         : 0.000681601304398148
+	TotalHours        : 0.0163584313055556
+	TotalMinutes      : 0.981505878333333
+	TotalSeconds      : 58.8903527
+	TotalMilliseconds : 58890.3527
+
+2. We took each machine and we ran each example, as such:
++++ Ubuntu Machine +++
+- Parallel10 time test in a laptop running ubuntu. i7 2 cores:
+	Parallel10 result:    3001134
+	java TestCountPrimes  111,58s user 0,03s system 381% cpu 29,269 total
+
+- Parallel4 time test in a laptop running ubuntu. i7 2 cores:	
+	Parallel4  result:    3001134
+	java TestCountPrimes  89,26s user 0,03s system 334% cpu 26,674 total
+
+- Parallel2 time test in a laptop running ubuntu. i7 2 cores:	
+	Parallel2  result:    3001134
+	java TestCountPrimes  60,33s user 0,02s system 160% cpu 37,674 total
+
++++ Windows Machine, i7 processor with 4 cores +++
+- For 10 threads:
+	Days              : 0
+	Hours             : 0
+	Minutes           : 0
+	Seconds           : 13
+	Milliseconds      : 38
+	Ticks             : 130381355
+	TotalDays         : 0.000150904346064815
+	TotalHours        : 0.00362170430555556
+	TotalMinutes      : 0.217302258333333
+	TotalSeconds      : 13.0381355
+	TotalMilliseconds : 13038.1355
+
+- For 4 threads:
+	Days              : 0
+	Hours             : 0
+	Minutes           : 0
+	Seconds           : 21
+	Milliseconds      : 61
+	Ticks             : 210613237
+	TotalDays         : 0.000243765320601852
+	TotalHours        : 0.00585036769444444
+	TotalMinutes      : 0.351022061666667
+	TotalSeconds      : 21.0613237
+	TotalMilliseconds : 21061.3237
+
+- For 2 threads:
+	Days              : 0
+	Hours             : 0
+	Minutes           : 0
+	Seconds           : 37
+	Milliseconds      : 414
+	Ticks             : 374146340
+	TotalDays         : 0.00043303974537037
+	TotalHours        : 0.0103929538888889
+	TotalMinutes      : 0.623577233333333
+	TotalSeconds      : 37.414634
+	TotalMilliseconds : 37414.634
+
+
+3. Without synchronization for the increment() method, we get these results: 
+2999028 and 2998645.
+
+4. Practically, the getter in class LongCounter does not need synchronization 
+in our situation, because we call the lc.get() outside the created threads and 
+the increment() method is already synchronized, thus doing its job properly.
+In the end, we only call the getter to get our last field's value, after the 
+threads have been updating it. Theoretically, the getter must also be synchronized, 
+so that it works as expected in any other situation.
+
+
+============
+Exercise 1.5
+============
+1. After running the program many times, we conclude that Mystery class is not thread safe. 
+  Some of the results we get are: 1458266, 1671837, 1511966, 1483403.
+
+2. It is not thread safe because the methods used in the thread are using different locks. 
+The method using static synchronized is using the Object's class whereas the instance 
+method is using the instance of the object Mystery as lock.
+
+3. We can use a synchronized block inside the instance method which locks the object class 
+instead of the instance of the object.
+
+============
+Exercise 1.6
+============
+1. The natural way we see to make the data structure thread safe is to use synchronized keywords
+on the methods that change the state of DoubleArrayList (size, get, add, set).
+
+2. There is some impact performancewise on this solution, which represents  an issue when scaling it to several threads, since every time a thread calls a synchronized method, the other threads have to wait until the lock is released.
+
+3. No, this solution will not be thread safe because the book recomends the use of one lock
+for every mutable variable and when using locks to coordinate the access to a variable, 
+the same lock must be used wherever the variable is accessed, which is, in our case, 
+all the methods that we made synchronized.
+
+Using five locks would not be helpful, because one needs to protect the state of the object, 
+which is represented by the two fields (double[] items and int size). 
+Instead, it might make sense to use either one or two locks for synchronized
+blocks when changing the state of our object instance. 
+That would also ensure visibility accross different threads. 
+In any case, one protects a field with the same lock whenever accessing it.
+
+
+============
+Exercise 1.7
+============
+1. One solution could be to write a synchronized block using  a new static object as a lock.
+We would use it just before the return of the method add, where the variable is mutated, 
+and around the return of the method totalSize() which returns the state of the variable
+
+2. We can create a new object to lock on the constructor and this seems to solve the problem. 
+Using this strategy multiple concurrent threads can create new DoubleArrayList Instances 
+at the same time.
+
+
+============
+Exercise 1.8
+============
+1. The two threads  are not using the same class to lock. 
+The method increment() is using MysteryA.class as lock whereas increment4() is using MysiteryB.class as lock
+therefore the resulting value count is rarely 50.000.000.
+
+2. The program behaves as expected when syncronizing on the same object and using synchronized block
+around the places where count is modified. In this case we create a new static object.
+Otherwise, we can specifically use a synchronized statement inside increment4() method, but where we lock 'MysteryA.class'
+precisely instead.

@@ -1,0 +1,49 @@
+Exercise 8.1
+1. To begin with, the given sequential functional test creates a specific compact test case, where asserts depend on each other. It would have been more convenient to have the test composed of multiple independent pieces, which test each aspect individually instead. Moreover, the test would show whether bugs exist with regards to that very specific code path, which we consider very limited, because it could miss out many other inconsistent cases.
+
+ However, we would analyze the test suite according to the following code coverage criteria:
+ +++ function coverage: All the public methods are called (get(), size(), put(), putIfAbsent() etc.) and these call the private methods at the same time (getHash(), makeBuckets() etc.). The inner class's methods are also called from the public methods (search(), for example). As observations, the test suite does not contain any test instance for the constructors, while the method remove() is only called one time in the test sequence;
+ +++ statement coverage: 
+ 	 - getHash() and containsKey(): Both are fully covered, because they expose one code path;
+ 	 - get(): All paths are covered, because the if statement is checked by tests such as 'assert map.get(117) == null;' and ' assert map.get(117).equals("C");';
+ 	 - size(): All paths are tested, by using different small tests such as 'assert map.size() == 0;' and 'assert map.size() == 2;';
+ 	 - put(): Both if branches are covered by tests such as 'assert map.put(17, "B") == null;' and 'assert map.put(117, "C").equals("A");';
+ 	 - putIfAbsent(): Both if branches are covered by tests such as 'assert map.putIfAbsent(17, "D").equals("B");' and 'assert map.putIfAbsent(34, "F") == null;';
+ 	 - remove(): Only the path where a value different than null gets returned is tested by the assert 'assert map.remove(117).equals("C");', but the other path is not tested;
+ 	 - forEach(): Elements in the map are properly printed when tests are run, so forEach() is fully covered;
+ 	 - other methods: Other above mentioned methods are statement-covered through the tests run on the previous methods.
+
+In order to improve the test suite, we would add more tests for remove(), so it can fully statement-cover. The added tests are:
+	- T1: assert map.remove(999) == null;
+    - T2: assert map.remove(555) == null;
+
+Another test would be to put more elements on the same key in the map, such that reallocateBuckets() actually gets called and see how the map implementation behaves in that case. The added test is:
+	- T3:
+		Random random = new Random();
+		for(int i = 0; i < 1000; i++) {
+		  map.put(random.nextInt(100), "Some value");
+		}
+
+With the added tests, the implementation still passes the sequential test.
+
+2. The test can be found in 'TestMap.java'. Such a functional test would be able to find defects only for put(), putIfAbsent() and remove(), but not for containsKey(), since that only returns a boolean value that never affects our threadSum AtomicInteger and never gets compared against the mapSum in the assertion. Therefore, we are convinced that the test would efficiently approve/disapprove the correctness of the StripedWriteMap implementation for all methods, except for containsKey().
+
+3. It seems like 'TestMap.java' finds no defects for WrapConcurrentHashMap, as expected, but the same goes for WrapConcurrentHashMap.
+
+4. Check out 'TestMap.java'. Test indicates no errors.
+
+5. Check out 'TestMap.java'. Test indicates no errors.
+
+6. In order to improve the test of the concurrent hash map implementations, one could make threads put elements in the map and then check with containsKey() if the expected elements are indeed there. Similarly, one could make threads remove elements and then check with containsKey() if the elements are indeed removed from the hash map.
+
+
+Exercise 8.2
+1. After removing the synchronized block in put() method of StripedWriteMap, the test fails on the assertion 'assert mapSum.get() == threadSum.get();', as well as on the assertion 'assert tCounts[x] == mapThreadXCount.get();', but it does not fail on the assertions made in exercise 8.1.4, though. Therefore, the functional test only discovers whether the hash map does not contain the expected keys or whether the number of entries for each thread is valid.
+
+2. By locking on the synchronized (locks[0]) or synchronized (this) instead of synchronized(locks[stripe]) in the put() method of StripedWriteMap, the test already discovers a failure for the very first assertion ('assert mapSum.get() == threadSum.get();'), but also for the last assertion ('assert tCounts[x] == mapThreadXCount.get();'). As noticed, the test finds the exact same inconsistencies as found in the previous mutation test.
+
+3. Interestingly enough, the functional test runs without errors after turning the AtomicIntegerArray to a simple int[]. We think a reason for it might be that writes to the sizes array are made in a concurrent fashion, always in a synchronized block, while reads can be made by multiple threads simultaneously.
+
+4. After removing the sizes[stripe] read from the get() method in StripedWriteMap, it seems that the test does not report the absence of this atomic read affecting visibility of writes to reads.
+
+5. A possible way to inject faults would be to eliminate the 'volatile' and 'final' describing the StripedWriteMap's state fields. However, the functional test does not encounter any failure after trying this out.

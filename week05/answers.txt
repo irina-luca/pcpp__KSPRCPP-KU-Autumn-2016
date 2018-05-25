@@ -1,0 +1,34 @@
+Exercise 5.1:
+1. See materials in folder '5.1'.
+2. See materials in folder '5.1'.
+3. See materials in folder '5.1'.
+4. Compared to the explicit threads in last week's exercise (where more threads killed performance), we notice the improvement in performance. The graphs become more linear and it seems like no matter how much we increase the threads count after a certain amount (for instance 30, after what our graphs show), the running time is quite similar. Therefore, we think the pooling performance improvement originates from resource management reasons, as well as omitted thread overhead.
+5. LongAdder seems to yield very good performance in multithreading, compared to AtomicLong (which is more suitable for single-threading usage), because of several reasons: LongAdder has a healthier instructions per cycle measurement (CPU is better exploited while memory load execution), lower idle time than AtomicLong etc. 
+
+
+
+Exercise 5.3:
+1. See 'TestDownload.java'.
+2. See 'TestDownload.java'.
+3. - getPages() => 
+	Times for each execution: [3.720990939, 3.351202794, 3.537669558, 3.94699418, 3.603713649];
+	Times for accumulated execution: [3.908136388, 7.00560182, 9.97864346, 13.223441602, 16.225960475];
+4. - getPagesParallel() =>
+	Times for each execution: [0.629083708, 0.798287423, 0.640572593, 0.874951836, 0.613443599];
+	Times for accumulated execution: [0.710043035, 1.383478158, 2.095054327, 3.115292983, 3.771619866];
+
+	Results for comparison between fetching 23 webpages sequentially vs. in parallel:
+	*** Time for getting 23 webpages sequentially: 2.798609445s
+	*** Time for getting 23 webpages in parallel: 1.121046192s
+	
+	Fetching 23 webpages in parallel is not 23 times faster than fetching them sequentially, because the process depends on how fast the requests/responses perform and not on the CPU.
+
+
+Exercise 5.4:
+1.
+2.
+3.
+4.
+5. We notice that indeed, using a newFixedThreadPool of size 3 to run the 5 tasks does not run anymore. In fact, any newFixedThreadPool with size smaller than 5, the amount of tasks that we need to perform, will not run. We think that the newFixedThreadPool accepts as many threads as its capacity says and the rest of threads that we submit will then be queued up in the queue and wait until previously submitted threads finish or get cancelled.
+6. We get the same results as before, though the eventual different order occurs because the tasks are run asynchronously and therefore the fetched results depend on how the two submitted PageGetters return.
+7. OurOwnBoundedQueue is thread-safe because the state fields are locked on the same lock 'this', such that when the items list is full, no thread can access it and put an item to it, unless it is put to wait first, while another thread can then take an element from it and therefore make space for the first thread to put something in. The opposite case is also safe for the same reason of locking the state variables on 'this'.

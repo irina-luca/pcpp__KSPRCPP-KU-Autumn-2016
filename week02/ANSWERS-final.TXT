@@ -1,0 +1,144 @@
+=============
+PCPP: Answers
+=============
+
+Exercise 2.1
+1. The sequential program is already presented in TestCountFactors.java. 
+   The elapsed time was: 
+   	- 6.53 seconds in a pc laptop runing ubuntu 14.04, 8 gb ram and dual core processor i7
+   	- ~ 5664 milliseconds (about 5.6 seconds) on a Windows machine with 8GB RAM and multicore processor.
+
+2. Check TestCountFactors.java.
+
+3. We still get the correct answer, but the elapsed time has improved to 1609 milliseconds (about 1.6 seconds). Check TestCountFactors.java.
+
+4. No. 'volatile' fixes only visibility, not also atomicity, and therefore, by making the field volatile and not using synchronization on the addAndGet() method, the incremental action 'value += amount;' would not be atomic anymore and race conditions would not be avoided.
+
+5. In one of our computers, the number of factors stays the same, but the elapsed time improved just a little bit more from 1.6 seconds to 1.4/1.5 seconds.
+   In the second laptop, the implementation using java AtomicInteger is a little bit slower
+than the third implementation(MyAtomicInteger3) which is using synchronized methods.
+   We think that declaring AtomicInteger final is necessary to achieve
+correctness of the program, because the java atomic API only ensures
+atomicity of operations. Now, for speed, final would not make a big difference,
+in fact in one of our experiments it performs a little bit poorly, though it might be a good idea to declare it final to ensure correctness.
+
+
+Exercise 2.2
+1. In the VolatileCachingFactorizer class, the cache field is declared 'volatile', so that when it is set by a thread to reference a new OneValueCache, the new cached data will immediately become available to other threads.
+
+2. In the OneValueCache class, it important that both fields are declared 'final', because that guarantees initialization safety and composes OneValueCache as an immutable holder class. Thus, we do not need to use locking in order to achieve atomicity, because there is no need to worry about other threads changing the object's state while one specific thread gains a reference to it. All in all, OneValueCache becomes an immutable holder with the state variables fields lastNumber and lastNumber, that are related by an invariant, but are immutable and therefore thread-safe.
+
+
+Exercise 2.3
+1. We made:
+   - the field counts 'final' => we ensure immutability, by using Java's guarantee of safety initialization for sharing immutable objects
+   - increment() method 'synchronized' => we ensure correct access to the counts field
+   - getCount() method is 'synchronized' => we make sure that no thread sees stale values for the values counts[bin] in the counts array
+
+   We think that getSpan() method does not need to be synchronized, because it returns the length of our immutable array field counts, which will always have the same value, regardless how the array values get mutated.
+
+2. Check SimpleHistogram.java.
+
+3. Yes, after using the final AtomicInteger array, we can remove 'synchronized' from all methods, because both the incremental and the getter operations will ensure atomicity.
+   Moreover, the results are still correct and this solution sometimes performs about 0.5s better.
+
+4. Check SimpleHistogram.java. 
+
+5. For each of the classes Histogram2, Histogram3 and Histogram4, the getBins() method is implemented by returning a copy of the bin counts, which is the same as a fixed snapshot, therefore not affected by subsequent increment calls.
+
+6. Check SimpleHistogram.java. 
+
+
+Exercise 2.4
+1.  Check TestCache.java.
+
+2.  +++ Number of calls to the factorizer wrapped in Memoizer1: 115 000.
+    +++ Time measurement on a Windows Machine for Memoizer1:
+		Days              : 0
+		Hours             : 0
+		Minutes           : 0
+		Seconds           : 16
+		Milliseconds      : 348
+		Ticks             : 163489015
+		TotalDays         : 0.000189223396990741
+		TotalHours        : 0.00454136152777778
+		TotalMinutes      : 0.272481691666667
+		TotalSeconds      : 16.3489015
+		TotalMilliseconds : 16348.9015
+	+++ Because HashMap is not thread-safe, Memoizer1 synchronizes the whole compute() method, which results into a scalability issue, because only one thread at a time can execute it.
+		No concurrency is used and f.compute(i) will be called once for every i in the loops. Thus, the number of calls to the factorizer is precisely 115 000.
+
+3.  +++ Number of calls to the factorizer wrapped in Memoizer2: 251 703, 248 623.
+    +++ Time measurement on a Windows Machine for Memoizer2:    
+	    Days              : 0
+	    Hours             : 0
+	    Minutes           : 0
+	    Seconds           : 8
+	    Milliseconds      : 574
+	    Ticks             : 85745678
+	    TotalDays         : 9.92426828703704E-05
+	    TotalHours        : 0.00238182438888889
+	    TotalMinutes      : 0.142909463333333
+	    TotalSeconds      : 8.5745678
+	    TotalMilliseconds : 8574.5678
+	+++ Memoizer2 uses ConcurrentHashMap, which provides the class with concurrent behavior. However, its vulnerability is that two threads can call compute() and compute the same value at the same time, which is also against the general purpose of cache, since now the same data is caculated multiple times. As a consequence, f.compute(i) is called more times than necessary, thus resulting in a bigger number of calls to the factorizer. However, introducing some concurrency decreases the elapsed time.
+
+4.  +++ Number of calls to the factorizer wrapped in Memoizer3: 118 163, 117 917.
+    +++ Time measurement on a Windows Machine for Memoizer3:    
+		Days              : 0
+		Hours             : 0
+		Minutes           : 0
+		Seconds           : 7
+		Milliseconds      : 736
+		Ticks             : 77369103
+		TotalDays         : 8.95475729166667E-05
+		TotalHours        : 0.00214914175
+		TotalMinutes      : 0.128948505
+		TotalSeconds      : 7.7369103
+		TotalMilliseconds : 7736.9103
+	+++ Memoizer3 uses the good concurrency provided by ConcurrentHashMap, and checks first whether a certain computation has already been registered and if not, it registers it as a FutureTask. This way, thread B which arrives after thread A, wanting to compute the same as thread A, will wait instead of doing the same work. The vulnerability consists though in the possibility of two threads computing the same value, because the if block in compute() is a nonatomic check-then-act sequence. Moreover, the operation cache.put(arg, ft); is a compound action performed on the map, which is not atomic. However, the good concurrency still gives a good elapsed time and the number of calls to the factorizer will still be bigger than it should, because of threads still doing the same operation (but the vulnerability window is smaller than with Memoizer2).
+
+5.  +++ Number of calls to the factorizer wrapped in Memoizer4: 115 000.
+    +++ Time measurement on a Windows Machine for Memoizer4:    
+		Days              : 0
+		Hours             : 0
+		Minutes           : 0
+		Seconds           : 7
+		Milliseconds      : 873
+		Ticks             : 78732185
+		TotalDays         : 9.11252141203704E-05
+		TotalHours        : 0.00218700513888889
+		TotalMinutes      : 0.131220308333333
+		TotalSeconds      : 7.8732185
+		TotalMilliseconds : 7873.2185
+	+++ Memoizer4 eliminates the vulnerability introduced by the compound action in cache.put(arg, ft); by using the ConcurrentMap's atomic putIfAbsent method. Therefore, the number of calls to the factorizer is as expected and the elapsed time is also good due to concurrency.
+
+6.  +++ Number of calls to the factorizer wrapped in Memoizer5: 115 000.
+    +++ Time measurement on a Windows Machine for Memoizer5:    
+		Days              : 0
+		Hours             : 0
+		Minutes           : 0
+		Seconds           : 7
+		Milliseconds      : 718
+		Ticks             : 77182637
+		TotalDays         : 8.9331755787037E-05
+		TotalHours        : 0.00214396213888889
+		TotalMinutes      : 0.128637728333333
+		TotalSeconds      : 7.7182637
+		TotalMilliseconds : 7718.2637
+	+++ Memoizer5 atomically checks whether arg is already in cache and if not, it adds a Future and runs it on the calling thread. Since this is a perfect implementation, the number of calls to the factorizer is as expected and the elapsed time is slightly better than the version before.
+
+7.  +++ Number of calls to the factorizer wrapped in Memoizer0: 115 000.
+    +++ Time measurement on a Windows Machine for Memoizer0:    
+		Days              : 0
+		Hours             : 0
+		Minutes           : 0
+		Seconds           : 7
+		Milliseconds      : 460
+		Ticks             : 74605291
+		TotalDays         : 8.63487164351852E-05
+		TotalHours        : 0.00207236919444444
+		TotalMinutes      : 0.124342151666667
+		TotalSeconds      : 7.4605291
+		TotalMilliseconds : 7460.5291
+	+++ Memoizer0 uses the performant method computeIfAbsent of ConcurrentHashMap, thus being thread-safe. The method invocation occurs atomically, which means that the function given in comnputeIfAbsent gets used at most one time for every key. Other operations tried on the map while the computation is working are blocked and the operation is concise. Therefore, the elapsed time is slightly smaller than in the other cases and the number of calls to the factorizer are just as expected, since everything is clearly thread-safe.

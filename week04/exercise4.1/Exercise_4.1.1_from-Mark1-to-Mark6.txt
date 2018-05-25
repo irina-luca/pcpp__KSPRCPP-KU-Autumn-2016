@@ -1,0 +1,86 @@
+# OS:   Windows 10; 10.0; amd64
+# JVM:  Oracle Corporation; 1.8.0_102
+# CPU:  Intel64 Family 6 Model 60 Stepping 3, GenuineIntel; 8 "cores"
+# Date: 2016-09-23T16:02:06+0200
+
+# Processor: Intel(R) Core(TM) i7-4700MQ CPU @ 2.4GHz 2.4 GHz
+
+
+
+
+Mark1():
+=> 0.0 ns
+
+Mark2():
+=> 30.3 ns
+=> 30.4 ns
+=> 30.8 ns
+
+Mark3():
+=>	30.4 ns
+	30.4 ns
+	30.2 ns
+	30.3 ns
+	30.4 ns
+	30.3 ns
+	30.3 ns
+	30.3 ns
+	30.3 ns
+	30.3 ns
+
+Mark4():
+=>	30.3 ns +/-  0.064
+=>  30.5 ns +/-  0.247
+=>  30.4 ns +/-  0.137
+
+Mark5():
+=> 	 
+	 384.9 ns +/-   772.96          2
+	 117.6 ns +/-    33.79          4
+	 208.5 ns +/-   171.77          8
+	 179.1 ns +/-   118.91         16
+	  52.1 ns +/-     7.58         32
+	  58.8 ns +/-    24.36         64
+	  74.5 ns +/-    69.28        128
+	  48.9 ns +/-     2.95        256
+	 204.1 ns +/-   505.88        512
+	  41.2 ns +/-     0.74       1024
+	  47.0 ns +/-     2.40       2048
+	  37.8 ns +/-     2.79       4096
+	  33.7 ns +/-     0.96       8192
+	  33.3 ns +/-     1.03      16384
+	  32.7 ns +/-     1.43      32768
+	  31.5 ns +/-     1.16      65536
+	  31.2 ns +/-     1.31     131072
+	  30.4 ns +/-     0.57     262144
+	  30.6 ns +/-     0.37     524288
+	  30.6 ns +/-     0.65    1048576
+	  31.0 ns +/-     1.78    2097152
+	  30.5 ns +/-     0.73    4194304
+	  30.3 ns +/-     0.20    8388608
+
+Mark6():
+=> 
+	multiply                            727.0 ns    1775.21          2
+	multiply                            160.4 ns      75.62          4
+	multiply                            160.4 ns      83.56          8
+	multiply                           5447.3 ns   16549.95         16
+	multiply                             61.5 ns      63.06         32
+	multiply                             55.5 ns      23.16         64
+	multiply                             80.2 ns      69.66        128
+	multiply                             63.1 ns      13.45        256
+	multiply                             60.9 ns       6.48        512
+	multiply                             48.9 ns       9.41       1024
+	multiply                             40.8 ns       0.54       2048
+	multiply                             40.6 ns       0.35       4096
+	multiply                             33.5 ns       0.59       8192
+	multiply                             33.4 ns       0.95      16384
+	multiply                             34.0 ns       2.52      32768
+	multiply                             31.2 ns       0.59      65536
+	multiply                             31.2 ns       0.59     131072
+	multiply                             30.9 ns       0.47     262144
+	multiply                             30.9 ns       0.46     524288
+	multiply                             30.6 ns       0.46    1048576
+	multiply                             30.5 ns       0.74    2097152
+	multiply                             30.3 ns       0.23    4194304
+	multiply                             30.6 ns       0.56    8388608

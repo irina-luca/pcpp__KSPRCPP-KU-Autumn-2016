@@ -1,0 +1,83 @@
+# OS:   Windows 10; 10.0; amd64
+# JVM:  Oracle Corporation; 1.8.0_102
+# CPU:  Intel64 Family 6 Model 60 Stepping 3, GenuineIntel; 8 "cores"
+# Date: 2016-09-23T18:10:36+0200
+hashCode()                            2.7 ns       0.02  134217728
+Point creation                       49.9 ns       1.12    8388608
+Thread's work                      5792.5 ns     129.87      65536
+Thread create                       773.2 ns      28.34     524288
+Thread create start               62879.4 ns     109.19       4096
+Thread create start join         128741.6 ns     565.17       2048
+ai value = 1433540000
+Uncontended lock                      4.7 ns       0.13   67108864
+
+
+# OS:   Windows 10; 10.0; amd64
+# JVM:  Oracle Corporation; 1.8.0_102
+# CPU:  Intel64 Family 6 Model 60 Stepping 3, GenuineIntel; 8 "cores"
+# Date: 2016-09-23T18:13:23+0200
+hashCode()                            2.8 ns       0.05  134217728
+Point creation                       48.1 ns       1.47    8388608
+Thread's work                      5680.6 ns      27.93      65536
+Thread create                       750.5 ns      11.34     524288
+Thread create start               64347.8 ns     775.68       4096
+Thread create start join         124756.4 ns     254.04       2048
+ai value = 1433540000
+Uncontended lock                      6.4 ns       0.12   67108864
+
+
+# OS:   Windows 10; 10.0; amd64
+# JVM:  Oracle Corporation; 1.8.0_102
+# CPU:  Intel64 Family 6 Model 60 Stepping 3, GenuineIntel; 8 "cores"
+# Date: 2016-09-23T18:14:46+0200
+hashCode()                            2.7 ns       0.04  134217728
+Point creation                       48.0 ns       1.26    8388608
+Thread's work                      5817.4 ns     100.34      65536
+Thread create                       796.6 ns      18.63     524288
+Thread create start               65454.9 ns    1440.62       4096
+Thread create start join         123454.9 ns     806.07       2048
+ai value = 1433540000
+Uncontended lock                      5.7 ns       0.04   67108864
+
+
+# OS:   Windows 10; 10.0; amd64
+# JVM:  Oracle Corporation; 1.8.0_102
+# CPU:  Intel64 Family 6 Model 60 Stepping 3, GenuineIntel; 8 "cores"
+# Date: 2016-09-23T18:15:47+0200
+hashCode()                            2.8 ns       0.02  134217728
+Point creation                       48.4 ns       0.51    8388608
+Thread's work                      5956.7 ns      67.33      65536
+Thread create                       781.5 ns      10.01     524288
+Thread create start               63613.0 ns     164.43       4096
+Thread create start join         130451.8 ns     969.97       2048
+ai value = 1433540000
+Uncontended lock                      5.7 ns       0.08   67108864
+
+
+# OS:   Windows 10; 10.0; amd64
+# JVM:  Oracle Corporation; 1.8.0_102
+# CPU:  Intel64 Family 6 Model 60 Stepping 3, GenuineIntel; 8 "cores"
+# Date: 2016-09-23T18:16:46+0200
+hashCode()                            2.7 ns       0.01  134217728
+Point creation                       46.7 ns       0.30    8388608
+Thread's work                      5705.4 ns      27.34      65536
+Thread create                       748.1 ns       2.57     524288
+Thread create start               63408.0 ns     201.97       4096
+Thread create start join         129163.6 ns     348.36       2048
+ai value = 1433540000
+Uncontended lock                      4.5 ns       0.03   67108864
+
+
+WITHOUT WIFI
+# OS:   Windows 10; 10.0; amd64
+# JVM:  Oracle Corporation; 1.8.0_102
+# CPU:  Intel64 Family 6 Model 60 Stepping 3, GenuineIntel; 8 "cores"
+# Date: 2016-09-23T18:18:12+0200
+hashCode()                            2.8 ns       0.05  134217728
+Point creation                       50.4 ns       0.39    8388608
+Thread's work                      5823.4 ns      48.06      65536
+Thread create                       759.6 ns       3.96     524288
+Thread create start               63685.7 ns     122.75       4096
+Thread create start join         125571.2 ns     728.35       2048
+ai value = 1433540000
+Uncontended lock                      5.5 ns       0.04   67108864

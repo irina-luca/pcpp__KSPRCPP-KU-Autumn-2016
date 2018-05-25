@@ -1,0 +1,12 @@
+# OS:   Windows 10; 10.0; amd64
+# JVM:  Oracle Corporation; 1.8.0_102
+# CPU:  Intel64 Family 6 Model 60 Stepping 3, GenuineIntel; 8 "cores"
+# Date: 2016-10-08T19:23:06+0200
+current thread hashCode               0.0 us       0.00  134217728
+ThreadLocalRandom                     0.0 us       0.00   67108864
+AtomicLong                       925048.6 us   10201.83          2
+LongAdder                         58384.3 us    2312.27          8
+LongCounter                      786081.5 us  367301.71          2
+NewLongAdder                     420517.4 us   34853.75          2
+NewLongAdderPadded               112160.6 us    4536.25          4
+NewLongAdderLessPadded           209840.1 us   16183.60          2

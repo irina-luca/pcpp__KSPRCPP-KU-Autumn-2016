@@ -1,0 +1,31 @@
+Exercise 9.1 (Optional)
+1. - (Skipped)
+
+2. - (Skipped)
+
+Exercise 9.2
+1. Check 'TestStmHistogram.java'.
+
+2. The code produces the expected results.
+
+3. Check 'TestStmHistogram.java'.
+
+4. Check 'TestStmHistogram.java'.
+
+5. Check 'TestStmHistogram.java'.
+
+6. Check 'TestStmHistogram.java'. Indeed, when dumping both 'total' and 'histogram', we can see that all the counts that were before in 'histogram' got transferred to 'total'.
+
+7. The transferBins() operation means that values of 0 from 'total' are once in a while added to the same values and reset. As such, it only makes sense that the bin counts in 'total' would be all 0 in the end and that is also what we see when dumping 'total'.
+
+Exercise 9.3
+1. Check 'TestStmMap.java'.
+
+2. Check 'TestStmMap.java'.
+
+3. Check 'TestStmMap.java'. 
+We believe the implementations are correct because all the three methods, put(), putIfAbsent() and remove() start by working on a local copy of the buckets array and perform changes atomically, which means that the changes belong to each and every transaction and will be comitted and pushed globally only if they succedeed or otherwise, they will be rolled back.
+
+4. Check 'TestStmMap.java'.
+
+5. As mentioned in the exercise, reallocateBuckets() implemented in the context of optimistic concurrency would be a long transaction, therefore interfering with short-term transactions such as put(), putIfAbsent() or remove(). On the other hand, one may still be able to use some blocking boolean or condition in order to prevent multiple threads reallocating at the same time. That means that all the three methods must check the boolean/condition before putting, puttingIfAbsent or removing, and in case reallocating is in process, the retry() must be called. This would determine the specific transaction to block until the Read Set changes and the transaction is allowed to continue, thus making sure reallocating buckets does not happen at that point. Notably, the blocking condition must be globally available to all the three above mentioned methods, in order to properly avoid overlapping.
